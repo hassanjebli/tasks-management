@@ -63,7 +63,11 @@ export default function DeleteUserForm({ className = "" }) {
         like to permanently delete your account.
       </p>
 
-      <DangerButton onClick={confirmUserDeletion}>Delete Account</DangerButton>
+      <div className="flex items-center justify-end gap-4">
+        <DangerButton onClick={confirmUserDeletion}>
+          Delete Account
+        </DangerButton>
+      </div>
 
       <Modal show={confirmingUserDeletion} onClose={closeModal}>
         <form onSubmit={deleteUser} className="p-6">

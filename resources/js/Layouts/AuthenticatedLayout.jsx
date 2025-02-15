@@ -1,19 +1,19 @@
 import { useState, useEffect } from "react";
-import { Link } from "@inertiajs/react";
-import NavLink from "../Components/NavLink";
+import { Link, usePage } from "@inertiajs/react";
 
-export default function AuthenticatedLayout({ children, auth }) {
+export default function AuthenticatedLayout({ children }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Click outside handler
+  const auth = usePage().props.auth;
+
   useEffect(() => {
     const handleClickOutside = (event) => {
-      // Close profile dropdown
+
       if (!event.target.closest("#profile-dropdown")) {
         setIsDropdownOpen(false);
       }
-      // Close mobile menu
+
       if (
         !event.target.closest("#mobile-menu") &&
         !event.target.closest("#mobile-menu-button")
@@ -24,9 +24,6 @@ export default function AuthenticatedLayout({ children, auth }) {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
-  // Get user initial
-  const userInitial = auth?.user?.name?.charAt(0)?.toUpperCase() || "U";
 
   return (
     <div className="min-h-screen bg-emerald-50">
@@ -112,7 +109,7 @@ export default function AuthenticatedLayout({ children, auth }) {
               <Link
                 href={route("logout")}
                 method="post"
-                className="block px-4 py-3 text-red-600 hover:bg-red-100 hover:text-red-700 transition-colors"
+                className="w-full text-left block px-4 py-3 text-red-600 hover:bg-red-100 hover:text-red-700 transition-colors"
               >
                 Log Out
               </Link>
@@ -124,18 +121,26 @@ export default function AuthenticatedLayout({ children, auth }) {
       {/* Responsive Sidebar */}
       <aside
         id="mobile-menu"
-        className={`fixed left-0 top-16 h-[calc(100vh-4rem)] w-64 bg-white border-r border-emerald-100 z-30 py-6 px-4 transform transition-transform duration-300 ease-in-out ${
+        className={`fixed left-0 top-16 h-[calc(100vh-4rem)] w-64 bg-white border-r border-emerald-100 z-50 py-6 px-4 transform transition-transform duration-300 ease-in-out shadow-xl ${
           isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0`}
       >
         <nav className="space-y-1">
-          <NavLink
+          <Link
             href={route("dashboard")}
             active={route().current("dashboard")}
-            className="group flex items-center px-4 py-3 rounded-xl transition-all"
+            className={`group flex items-center px-4 py-3 rounded-xl transition-all ${
+              route().current("dashboard")
+                ? "bg-emerald-50 text-emerald-700"
+                : "text-emerald-400 hover:bg-emerald-50 hover:text-emerald-600"
+            }`}
           >
             <svg
-              className="w-5 h-5 mr-3 text-emerald-400 group-hover:text-emerald-600"
+              className={`w-5 h-5 mr-3 ${
+                route().current("dashboard")
+                  ? "text-emerald-600"
+                  : "text-emerald-400 group-hover:text-emerald-600"
+              }`}
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -148,17 +153,41 @@ export default function AuthenticatedLayout({ children, auth }) {
               />
             </svg>
             Dashboard
-          </NavLink>
+          </Link>
+          <Link
+            href={route("projects.index")}
+            active={route().current("projects.index")}
+            className={`group flex items-center px-4 py-3 rounded-xl transition-all ${
+              route().current("projects.index")
+                ? "bg-emerald-50 text-emerald-700"
+                : "text-emerald-400 hover:bg-emerald-50 hover:text-emerald-600"
+            }`}
+          >
+            <svg
+              className={`w-5 h-5 mr-3 ${
+                route().current("projects.index")
+                  ? "text-emerald-600"
+                  : "text-emerald-400 group-hover:text-emerald-600"
+              }`}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+              />
+            </svg>
+            Projects
+          </Link>
         </nav>
       </aside>
 
       {/* Main Content Area */}
-      <main
-        className={`pt-16 min-h-screen p-8 transition-all duration-300 ${
-          isMobileMenuOpen ? "ml-64" : "lg:ml-64"
-        }`}
-      >
-        <div className="max-w-7xl mx-auto bg-white rounded-2xl shadow-sm p-6 border border-emerald-50">
+      <main className="pt-16 min-h-screen p-8 lg:ml-64 transition-all duration-300">
+        <div className="max-w-7xl mx-auto bg-white rounded-2xl shadow-sm p-6 border border-emerald-50 mt-4">
           {children}
         </div>
       </main>

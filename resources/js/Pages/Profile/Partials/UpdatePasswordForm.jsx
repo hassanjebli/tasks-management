@@ -71,12 +71,6 @@ export default function UpdatePasswordForm({ className = "" }) {
             onChange={(e) => setData("password", e.target.value)}
             className="w-full"
           />
-          <div className="mt-2 h-2 bg-emerald-100 rounded-full overflow-hidden">
-            <div
-              className="h-full bg-emerald-500 transition-all duration-300"
-              style={{ width: `${getPasswordStrength()}%` }}
-            />
-          </div>
           <InputError message={errors.password} className="mt-2" />
         </div>
 

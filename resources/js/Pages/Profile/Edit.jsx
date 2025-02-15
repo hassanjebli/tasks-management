@@ -8,8 +8,6 @@ import DeleteUserForm from "./Partials/DeleteUserForm";
 export default function Edit({ auth }) {
   return (
     <AuthenticatedLayout
-      user={auth.user}
-      auth={auth}
       header={
         <h1 className="text-2xl font-semibold text-emerald-800">
           Account Settings
