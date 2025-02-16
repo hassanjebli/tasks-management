@@ -2,13 +2,13 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import React from "react";
 
-const Projects = () => {
+const Index = () => {
   return (
     <AuthenticatedLayout>
-      <Head title="Projects" />
-      Projects
+      <Head title="Tasks" />
+      Tasks
     </AuthenticatedLayout>
   );
 };
 
-export default Projects;
+export default Index;

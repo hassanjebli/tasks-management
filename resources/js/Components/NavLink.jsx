@@ -1,6 +1,8 @@
+import { Link } from "@inertiajs/react";
+
 export default function NavLink({ href, active, children, ...props }) {
   return (
-    <a
+    <Link
       href={href}
       className={`flex items-center px-4 py-3 rounded-xl transition-colors
                     ${
@@ -11,6 +13,6 @@ export default function NavLink({ href, active, children, ...props }) {
       {...props}
     >
       {children}
-    </a>
+    </Link>
   );
 }

@@ -1,5 +1,12 @@
 import { useState, useEffect } from "react";
 import { Link, usePage } from "@inertiajs/react";
+import NavLink from "@/Components/NavLink";
+import {
+  LayoutDashboard,
+  FolderKanban,
+  CheckSquare,
+  Users,
+} from "lucide-react";
 
 export default function AuthenticatedLayout({ children }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -9,7 +16,6 @@ export default function AuthenticatedLayout({ children }) {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-
       if (!event.target.closest("#profile-dropdown")) {
         setIsDropdownOpen(false);
       }
@@ -120,68 +126,42 @@ export default function AuthenticatedLayout({ children }) {
 
       {/* Responsive Sidebar */}
       <aside
-        id="mobile-menu"
         className={`fixed left-0 top-16 h-[calc(100vh-4rem)] w-64 bg-white border-r border-emerald-100 z-50 py-6 px-4 transform transition-transform duration-300 ease-in-out shadow-xl ${
           isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0`}
       >
         <nav className="space-y-1">
-          <Link
+          <NavLink
             href={route("dashboard")}
             active={route().current("dashboard")}
-            className={`group flex items-center px-4 py-3 rounded-xl transition-all ${
-              route().current("dashboard")
-                ? "bg-emerald-50 text-emerald-700"
-                : "text-emerald-400 hover:bg-emerald-50 hover:text-emerald-600"
-            }`}
           >
-            <svg
-              className={`w-5 h-5 mr-3 ${
-                route().current("dashboard")
-                  ? "text-emerald-600"
-                  : "text-emerald-400 group-hover:text-emerald-600"
-              }`}
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-              />
-            </svg>
+            <LayoutDashboard className="w-5 h-5 mr-3" />
             Dashboard
-          </Link>
-          <Link
+          </NavLink>
+
+          <NavLink
             href={route("projects.index")}
             active={route().current("projects.index")}
-            className={`group flex items-center px-4 py-3 rounded-xl transition-all ${
-              route().current("projects.index")
-                ? "bg-emerald-50 text-emerald-700"
-                : "text-emerald-400 hover:bg-emerald-50 hover:text-emerald-600"
-            }`}
           >
-            <svg
-              className={`w-5 h-5 mr-3 ${
-                route().current("projects.index")
-                  ? "text-emerald-600"
-                  : "text-emerald-400 group-hover:text-emerald-600"
-              }`}
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-              />
-            </svg>
+            <FolderKanban className="w-5 h-5 mr-3" />
             Projects
-          </Link>
+          </NavLink>
+
+          <NavLink
+            href={route("tasks.index")}
+            active={route().current("tasks.index")}
+          >
+            <CheckSquare className="w-5 h-5 mr-3" />
+            Tasks
+          </NavLink>
+
+          <NavLink
+            href={route("users.index")}
+            active={route().current("users.index")}
+          >
+            <Users className="w-5 h-5 mr-3" />
+            Users
+          </NavLink>
         </nav>
       </aside>
 
