@@ -1,7 +1,15 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
 import React from "react";
-import { Plus, Pencil, Trash2, FolderOpen } from "lucide-react";
+import {
+  Plus,
+  Pencil,
+  Trash2,
+  FolderOpen,
+  ArrowUpDown,
+  ArrowUp,
+  ArrowDown,
+} from "lucide-react";
 import Pagination from "@/Components/Pagination";
 import TextInput from "@/Components/TextInput";
 import SelectInput from "@/Components/SelectInput";
@@ -24,6 +32,46 @@ const Index = ({ projects, queryParams = null }) => {
     searchFieldChanged(name, e.target.value);
   };
 
+  const sortChanged = (name) => {
+    if (name === queryParams.sort_field) {
+      if (queryParams.sort_direction === "asc") {
+        queryParams.sort_direction = "desc";
+      } else {
+        queryParams.sort_direction = "asc";
+      }
+    } else {
+      queryParams.sort_field = name;
+      queryParams.sort_direction = "asc";
+    }
+
+    router.get(route("projects.index"), queryParams);
+  };
+
+  const SortIndicator = ({ fieldName }) => {
+    if (queryParams.sort_field !== fieldName) {
+      return (
+        <ArrowUpDown size={16} className="ml-1 inline-block text-gray-400" />
+      );
+    }
+    return queryParams.sort_direction === "asc" ? (
+      <ArrowUp size={16} className="ml-1 inline-block text-gray-700" />
+    ) : (
+      <ArrowDown size={16} className="ml-1 inline-block text-gray-700" />
+    );
+  };
+
+  const SortableHeader = ({ fieldName, children }) => (
+    <th
+      onClick={() => sortChanged(fieldName)}
+      className="px-6 py-3 text-left font-semibold tracking-wider border-b cursor-pointer hover:bg-gray-50 transition-colors group"
+    >
+      <div className="flex items-center gap-1">
+        {children}
+        <SortIndicator fieldName={fieldName} />
+      </div>
+    </th>
+  );
+
   return (
     <AuthenticatedLayout>
       <Head title="Projects" />
@@ -42,24 +90,16 @@ const Index = ({ projects, queryParams = null }) => {
         <table className="min-w-full border border-gray-200 rounded-lg shadow-sm">
           <thead className="bg-gray-100 text-gray-700 uppercase text-sm">
             <tr>
-              <th className="px-6 py-3 text-left font-semibold tracking-wider border-b">
-                ID
-              </th>
+              <SortableHeader fieldName="id">ID</SortableHeader>
               <th className="px-6 py-3 text-left font-semibold tracking-wider border-b">
                 Image
               </th>
-              <th className="px-6 py-3 text-left font-semibold tracking-wider border-b">
-                Name
-              </th>
-              <th className="px-6 py-3 text-left font-semibold tracking-wider border-b">
-                Status
-              </th>
-              <th className="px-6 py-3 text-left font-semibold tracking-wider border-b">
+              <SortableHeader fieldName="name">Name</SortableHeader>
+              <SortableHeader fieldName="status">Status</SortableHeader>
+              <SortableHeader fieldName="created_at">
                 Create Date
-              </th>
-              <th className="px-6 py-3 text-left font-semibold tracking-wider border-b">
-                Due Date
-              </th>
+              </SortableHeader>
+              <SortableHeader fieldName="due_date">Due Date</SortableHeader>
               <th className="px-6 py-3 text-left font-semibold tracking-wider border-b">
                 Created By
               </th>
