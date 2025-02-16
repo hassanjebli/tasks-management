@@ -1,10 +1,29 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, Link } from "@inertiajs/react";
+import { Head, Link, router } from "@inertiajs/react";
 import React from "react";
-import { Plus, Pencil, Trash2 } from "lucide-react";
+import { Plus, Pencil, Trash2, FolderOpen } from "lucide-react";
 import Pagination from "@/Components/Pagination";
+import TextInput from "@/Components/TextInput";
+import SelectInput from "@/Components/SelectInput";
 
-const Index = ({ projects }) => {
+const Index = ({ projects, queryParams = null }) => {
+  queryParams = queryParams || {};
+  const searchFieldChanged = (name, value) => {
+    if (value) {
+      queryParams[name] = value;
+    } else {
+      delete queryParams[name];
+    }
+
+    router.get(route("projects.index"), queryParams);
+  };
+
+  const onKeyPress = (name, e) => {
+    if (e.key !== "Enter") return;
+
+    searchFieldChanged(name, e.target.value);
+  };
+
   return (
     <AuthenticatedLayout>
       <Head title="Projects" />
@@ -23,69 +42,137 @@ const Index = ({ projects }) => {
         <table className="min-w-full border border-gray-200 rounded-lg shadow-sm">
           <thead className="bg-gray-100 text-gray-700 uppercase text-sm">
             <tr>
-              {[
-                "ID",
-                "Image",
-                "Name",
-                "Status",
-                "Create Date",
-                "Due Date",
-                "Created By",
-                "Actions",
-              ].map((heading, index) => (
-                <th
-                  key={index}
-                  className="px-6 py-3 text-left font-semibold tracking-wider border-b"
+              <th className="px-6 py-3 text-left font-semibold tracking-wider border-b">
+                ID
+              </th>
+              <th className="px-6 py-3 text-left font-semibold tracking-wider border-b">
+                Image
+              </th>
+              <th className="px-6 py-3 text-left font-semibold tracking-wider border-b">
+                Name
+              </th>
+              <th className="px-6 py-3 text-left font-semibold tracking-wider border-b">
+                Status
+              </th>
+              <th className="px-6 py-3 text-left font-semibold tracking-wider border-b">
+                Create Date
+              </th>
+              <th className="px-6 py-3 text-left font-semibold tracking-wider border-b">
+                Due Date
+              </th>
+              <th className="px-6 py-3 text-left font-semibold tracking-wider border-b">
+                Created By
+              </th>
+              <th className="px-6 py-3 text-left font-semibold tracking-wider border-b">
+                Actions
+              </th>
+            </tr>
+            <tr>
+              <th className="px-6 py-3 text-left font-semibold tracking-wider border-b"></th>
+              <th className="px-6 py-3 text-left font-semibold tracking-wider border-b"></th>
+              <th className="px-6 py-3 text-left font-semibold tracking-wider border-b">
+                <TextInput
+                  className="w-full"
+                  defaultValue={queryParams.name}
+                  placeholder="Project Name"
+                  onBlur={(e) => searchFieldChanged("name", e.target.value)}
+                  onKeyPress={(e) => onKeyPress("name", e)}
+                />
+              </th>
+              <th className="px-6 py-3 text-left font-semibold tracking-wider border-b">
+                <SelectInput
+                  defaultValue={queryParams.status}
+                  className="w-full"
+                  onChange={(e) => searchFieldChanged("status", e.target.value)}
                 >
-                  {heading}
-                </th>
-              ))}
+                  <option value="">Select Status</option>
+                  <option value="pending">Pending</option>
+                  <option value="in_progress">In Progress</option>
+                  <option value="completed">Completed</option>
+                </SelectInput>
+              </th>
+              <th className="px-6 py-3 text-left font-semibold tracking-wider border-b"></th>
+              <th className="px-6 py-3 text-left font-semibold tracking-wider border-b"></th>
+              <th className="px-6 py-3 text-left font-semibold tracking-wider border-b"></th>
+              <th className="px-6 py-3 text-left font-semibold tracking-wider border-b"></th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200 text-gray-800 text-sm">
-            {projects?.data.map((project) => (
-              <tr key={project.id} className="hover:bg-gray-50 transition-all">
-                <td className="px-6 py-4">{project.id}</td>
-                <td className="px-6 py-4">
-                  <img
-                    src={project.image_path}
-                    alt={project.name}
-                    className="w-10 h-10 rounded-md border"
-                  />
-                </td>
-                <td className="px-6 py-4 font-medium">{project.name}</td>
-                <td className="px-6 py-4">
-                  <span
-                    className={`px-4 py-1 text-xs font-medium rounded-full whitespace-nowrap ${
-                      project.status === "pending"
-                        ? "text-yellow-700 bg-yellow-100"
-                        : project.status === "in_progress"
-                        ? "text-blue-700 bg-blue-100"
-                        : "text-green-700 bg-green-100"
-                    }`}
-                  >
-                    {project.status.replace("_", " ").toUpperCase()}
-                  </span>
-                </td>
-                <td className="px-6 py-4 text-nowrap">{project.created_at}</td>
-                <td className="px-6 py-4 text-nowrap">{project.due_date}</td>
-                <td className="px-6 py-4">{project.createdBy?.name}</td>
-                <td className="px-6 py-4 text-right">
-                  <Link
-                    href={route("projects.edit", project.id)}
-                    className="text-blue-500 hover:text-blue-700 px-2 inline-block"
-                  >
-                    <Pencil size={16} />
-                  </Link>
-                  <Link
-                    href={route("projects.destroy", project.id)}
-                    className="text-red-500 hover:text-red-700 px-2 inline-block"
-                  >
-                    <Trash2 size={16} />
-                  </Link>
+            {projects.data.length > 0 ? (
+              projects.data.map((project) => (
+                <tr
+                  key={project.id}
+                  className="hover:bg-gray-50 transition-all"
+                >
+                  <td className="px-6 py-4">{project.id}</td>
+                  <td className="px-6 py-4">
+                    <img
+                      src={project.image_path}
+                      alt={project.name}
+                      className="w-10 h-10 rounded-md border object-cover"
+                    />
+                  </td>
+                  <td className="px-6 py-4 font-medium">{project.name}</td>
+                  <td className="px-6 py-4">
+                    <span
+                      className={`px-3 py-1.5 text-xs font-medium rounded-full capitalize ${
+                        project.status === "pending"
+                          ? "text-yellow-800 bg-yellow-100"
+                          : project.status === "in_progress"
+                          ? "text-blue-800 bg-blue-100"
+                          : "text-green-800 bg-green-100"
+                      }`}
+                    >
+                      {project.status.replace(/_/g, " ")}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {new Date(project.created_at).toLocaleDateString()}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {project.due_date
+                      ? new Date(project.due_date).toLocaleDateString()
+                      : "-"}
+                  </td>
+                  <td className="px-6 py-4">
+                    {project.createdBy?.name || "N/A"}
+                  </td>
+                  <td className="px-6 py-4 text-right">
+                    <div className="flex items-center justify-end space-x-3">
+                      <Link
+                        href={route("projects.edit", project.id)}
+                        className="text-blue-500 hover:text-blue-700 transition-colors"
+                        aria-label="Edit project"
+                      >
+                        <Pencil size={16} />
+                      </Link>
+                      <Link
+                        href={route("projects.destroy", project.id)}
+                        className="text-red-500 hover:text-red-700 transition-colors"
+                        aria-label="Delete project"
+                      >
+                        <Trash2 size={16} />
+                      </Link>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td
+                  colSpan="8"
+                  className="px-6 py-24 text-center text-gray-500"
+                >
+                  <div className="flex flex-col items-center justify-center">
+                    <FolderOpen size={40} className="text-gray-400 mb-4" />
+                    <p className="text-lg font-medium">No projects found</p>
+                    <p className="mt-1">
+                      It seems empty here. Start by creating a new project.
+                    </p>
+                  </div>
                 </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>
