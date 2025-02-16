@@ -141,7 +141,7 @@ export default function AuthenticatedLayout({ children }) {
 
           <NavLink
             href={route("projects.index")}
-            active={route().current("projects.index")}
+            active={route().current("projects.*")}
           >
             <FolderKanban className="w-5 h-5 mr-3" />
             Projects
@@ -149,7 +149,7 @@ export default function AuthenticatedLayout({ children }) {
 
           <NavLink
             href={route("tasks.index")}
-            active={route().current("tasks.index")}
+            active={route().current("tasks.*")}
           >
             <CheckSquare className="w-5 h-5 mr-3" />
             Tasks
@@ -157,7 +157,7 @@ export default function AuthenticatedLayout({ children }) {
 
           <NavLink
             href={route("users.index")}
-            active={route().current("users.index")}
+            active={route().current("users.*")}
           >
             <Users className="w-5 h-5 mr-3" />
             Users
