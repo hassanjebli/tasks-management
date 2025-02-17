@@ -51,7 +51,6 @@ export default function Login({ status, canResetPassword }) {
               value={data.email}
               className="w-full mt-1"
               autoComplete="username"
-              isFocused={true}
               onChange={(e) => setData("email", e.target.value)}
             />
             <InputError message={errors.email} className="mt-2" />

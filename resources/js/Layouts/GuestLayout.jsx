@@ -110,24 +110,6 @@ export default function GuestLayout({ children }) {
           </div>
         </div>
 
-        {/* Add these keyframes to your CSS */}
-        <style jsx>{`
-          @keyframes float {
-            0%,
-            100% {
-              transform: translateY(0) rotate(0deg);
-            }
-            50% {
-              transform: translateY(-20px) rotate(10deg);
-            }
-          }
-          .animate-float {
-            animation: float 8s ease-in-out infinite;
-          }
-          .animate-float-delayed {
-            animation: float 10s ease-in-out infinite 2s;
-          }
-        `}</style>
       </div>
 
       {/* Right Form Section */}

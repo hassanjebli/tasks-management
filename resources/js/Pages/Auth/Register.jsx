@@ -40,7 +40,6 @@ export default function Register() {
               value={data.name}
               className="w-full mt-1"
               autoComplete="name"
-              isFocused={true}
               onChange={(e) => setData("name", e.target.value)}
             />
             <InputError message={errors.name} className="mt-2" />

@@ -46,7 +46,6 @@ export default function ConfirmPassword() {
               value={data.password}
               className="w-full mt-1"
               autoComplete="current-password"
-              isFocused={true}
               onChange={(e) => setData("password", e.target.value)}
             />
             <InputError message={errors.password} className="mt-2" />

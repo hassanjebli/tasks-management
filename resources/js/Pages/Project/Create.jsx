@@ -47,7 +47,7 @@ const Create = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     post(route("projects.store"));
-    console.log(data);
+
   };
 
   return (

@@ -51,7 +51,6 @@ export default function ForgotPassword({ status }) {
               value={data.email}
               className="w-full mt-1"
               autoComplete="email"
-              isFocused={true}
               onChange={(e) => setData("email", e.target.value)}
             />
             <InputError message={errors.email} className="mt-2" />
