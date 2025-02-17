@@ -156,7 +156,7 @@ const TasksTable = ({
                       {task.project.name}
                     </td>
                   )}
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-4 text-nowrap">
                     <span
                       className={`px-3 py-1.5 text-xs font-medium rounded-full capitalize ${
                         task.status === "pending"

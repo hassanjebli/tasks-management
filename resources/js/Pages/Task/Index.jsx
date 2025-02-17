@@ -9,7 +9,7 @@ const Index = ({ tasks, queryParams = null }) => {
 
   return (
     <AuthenticatedLayout>
-      <Head title="tasks" />
+      <Head title="Tasks" />
       {/* Table Header */}
       <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between bg-white shadow-sm">
         <h2 className="text-2xl font-semibold text-gray-800">Tasks</h2>

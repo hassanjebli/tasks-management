@@ -1,6 +1,6 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
-import React from "react";
+import React, { useState } from "react";
 import {
   Plus,
   Pencil,
@@ -13,8 +13,9 @@ import {
 import Pagination from "@/Components/Pagination";
 import TextInput from "@/Components/TextInput";
 import SelectInput from "@/Components/SelectInput";
+import FlashMessage from "@/Components/FlashMessage";
 
-const Index = ({ projects, queryParams = null }) => {
+const Index = ({ projects, queryParams = null, success }) => {
   queryParams = queryParams || {};
   const searchFieldChanged = (name, value) => {
     if (value) {
@@ -72,9 +73,14 @@ const Index = ({ projects, queryParams = null }) => {
     </th>
   );
 
+  const [showFlash, setShowFlash] = useState(!!success);
+
   return (
     <AuthenticatedLayout>
       <Head title="Projects" />
+      {showFlash && success && (
+        <FlashMessage message={success} onClose={() => setShowFlash(false)} />
+      )}
       {/* Table Header */}
       <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between bg-white shadow-sm">
         <h2 className="text-2xl font-semibold text-gray-800">Projects</h2>

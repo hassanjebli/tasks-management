@@ -9,6 +9,8 @@ import {
 } from "lucide-react";
 
 export default function AuthenticatedLayout({ children }) {
+
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -31,8 +33,11 @@ export default function AuthenticatedLayout({ children }) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+
+
   return (
     <div className="min-h-screen bg-emerald-50">
+
       {/* Navigation Bar */}
       <nav className="fixed top-0 left-0 w-full h-16 bg-white shadow-sm z-40 flex items-center justify-between px-4 sm:px-8 border-b border-emerald-100">
         <div className="flex items-center gap-4">
