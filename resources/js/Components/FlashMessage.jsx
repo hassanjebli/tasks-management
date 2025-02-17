@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { CheckCircle, AlertCircle, X } from 'lucide-react';
 
-const FlashMessage = ({ message, type = 'success', duration = 5000, onClose }) => {
+const FlashMessage = ({ message, type = 'success', duration = 5000 }) => {
   const [isVisible, setIsVisible] = useState(true);
   const [progress, setProgress] = useState(100);
 
@@ -20,14 +20,13 @@ const FlashMessage = ({ message, type = 'success', duration = 5000, onClose }) =
 
     const hideTimer = setTimeout(() => {
       setIsVisible(false);
-      onClose?.();
     }, duration);
 
     return () => {
       clearInterval(timer);
       clearTimeout(hideTimer);
     };
-  }, [duration, message, onClose]);
+  }, [duration, message]);
 
   if (!message || !isVisible) return null;
 
@@ -52,7 +51,6 @@ const FlashMessage = ({ message, type = 'success', duration = 5000, onClose }) =
             <button
               onClick={() => {
                 setIsVisible(false);
-                onClose?.();
               }}
               className="text-gray-400 hover:text-gray-600 transition-colors"
             >

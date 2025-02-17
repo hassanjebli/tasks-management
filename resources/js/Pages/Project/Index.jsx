@@ -73,14 +73,10 @@ const Index = ({ projects, queryParams = null, success }) => {
     </th>
   );
 
-  const [showFlash, setShowFlash] = useState(!!success);
-
   return (
     <AuthenticatedLayout>
       <Head title="Projects" />
-      {showFlash && success && (
-        <FlashMessage message={success} onClose={() => setShowFlash(false)} />
-      )}
+      {success && <FlashMessage message={success} />}
       {/* Table Header */}
       <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between bg-white shadow-sm">
         <h2 className="text-2xl font-semibold text-gray-800">Projects</h2>
@@ -198,8 +194,14 @@ const Index = ({ projects, queryParams = null, success }) => {
                       </Link>
                       <Link
                         href={route("projects.destroy", project.id)}
+                        method="delete"
                         className="text-red-500 hover:text-red-700 transition-colors"
                         aria-label="Delete project"
+                        onClick={() =>
+                          confirm(
+                            "are you sure you want to delete this project ?"
+                          )
+                        }
                       >
                         <Trash2 size={16} />
                       </Link>
