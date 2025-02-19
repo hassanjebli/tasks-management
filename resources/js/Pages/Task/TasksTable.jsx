@@ -2,7 +2,7 @@ import Pagination from "@/Components/Pagination";
 import React from "react";
 import TextInput from "@/Components/TextInput";
 import SelectInput from "@/Components/SelectInput";
-import { Link, router } from "@inertiajs/react";
+import { Link, router, usePage } from "@inertiajs/react";
 import {
   ArrowDown,
   ArrowUp,
@@ -16,9 +16,29 @@ const TasksTable = ({
   tasks,
   queryParams = null,
   hideProjectColumn = false,
-  routeName = null,
+  projectId = null,
 }) => {
   queryParams = queryParams || {};
+  const currentRoute = usePage().url;
+  
+  // Determine if we're in project context
+  const isProjectContext = projectId !== null || currentRoute.includes('/projects/');
+  
+  // Extract project ID from URL if not provided but we're in a project route
+  if (!projectId && isProjectContext) {
+    const urlParts = currentRoute.split('/');
+    const projectIndex = urlParts.indexOf('projects');
+    if (projectIndex !== -1 && urlParts.length > projectIndex + 1) {
+      projectId = urlParts[projectIndex + 1];
+    }
+  }
+
+  const getRouteForSearch = () => {
+    if (isProjectContext && projectId) {
+      return route("projects.show", projectId);
+    }
+    return route("tasks.index");
+  };
 
   const searchFieldChanged = (name, value) => {
     if (value) {
@@ -27,7 +47,7 @@ const TasksTable = ({
       delete queryParams[name];
     }
 
-    router.get(route("tasks.index"), queryParams);
+    router.get(getRouteForSearch(), queryParams);
   };
 
   const onKeyPress = (name, e) => {
@@ -73,7 +93,7 @@ const TasksTable = ({
       queryParams.sort_direction = "asc";
     }
 
-    router.get(route("tasks.index"), queryParams);
+    router.get(getRouteForSearch(), queryParams);
   };
 
   return (
@@ -88,7 +108,7 @@ const TasksTable = ({
                 Image
               </th>
               <SortableHeader fieldName="name">Name</SortableHeader>
-              {hideProjectColumn && (
+              {!isProjectContext && (
                 <th className="px-6 py-3 text-left font-semibold tracking-wider border-b">
                   Project Name
                 </th>
@@ -117,7 +137,7 @@ const TasksTable = ({
                   onKeyPress={(e) => onKeyPress("name", e)}
                 />
               </th>
-              {hideProjectColumn && (
+              {!isProjectContext && (
                 <th className="px-6 py-3 text-left font-semibold tracking-wider border-b"></th>
               )}
               <th className="px-6 py-3 text-left font-semibold tracking-wider border-b">
@@ -151,9 +171,14 @@ const TasksTable = ({
                     />
                   </td>
                   <td className="px-6 py-4 font-medium">{task.name}</td>
-                  {hideProjectColumn && (
+                  {!isProjectContext && (
                     <td className="px-6 py-4 font-medium">
-                      {task.project.name}
+                      <Link 
+                        href={route("projects.show", task.project.id)} 
+                        className="text-blue-600 hover:underline"
+                      >
+                        {task.project.name}
+                      </Link>
                     </td>
                   )}
                   <td className="px-6 py-4 text-nowrap">
@@ -201,7 +226,7 @@ const TasksTable = ({
             ) : (
               <tr>
                 <td
-                  colSpan="8"
+                  colSpan={isProjectContext ? "7" : "8"}
                   className="px-6 py-24 text-center text-gray-500"
                 >
                   <div className="flex flex-col items-center justify-center">

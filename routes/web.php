@@ -17,7 +17,7 @@ Route::redirect('/', '/dashboard');
 Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard',['test'=>'test']);
+        return Inertia::render('Dashboard');
     })->name('dashboard');
 
     Route::resource('/projects', ProjectController::class);

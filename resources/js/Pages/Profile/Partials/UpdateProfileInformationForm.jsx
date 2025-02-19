@@ -22,7 +22,7 @@ export default function UpdateProfileInformationForm({ user, className = "" }) {
   };
 
   return (
-    <section className={`bg-white rounded-2xl shadow-sm p-8 ${className}`}>
+    <section>
       <Head title="Profile Information" />
 
       <div className="flex items-center gap-6 mb-8">

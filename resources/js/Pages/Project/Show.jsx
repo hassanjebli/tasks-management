@@ -1,3 +1,4 @@
+
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import React from "react";
@@ -102,7 +103,12 @@ const Show = ({ project, tasks, queryParams }) => {
         </div>
       </div>
 
-      <TasksTable tasks={tasks} queryParams={queryParams} />
+      {/* Pass the project ID to the TasksTable */}
+      <TasksTable 
+        tasks={tasks} 
+        queryParams={queryParams} 
+        projectId={project.id}
+      />
     </AuthenticatedLayout>
   );
 };
