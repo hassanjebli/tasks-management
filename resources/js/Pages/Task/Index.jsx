@@ -4,12 +4,13 @@ import React from "react";
 import { Plus, ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
 
 import TasksTable from "./TasksTable";
+import FlashMessage from "@/Components/FlashMessage";
 
-const Index = ({ tasks, queryParams = null }) => {
-
+const Index = ({ tasks, queryParams = null, success = null }) => {
   return (
     <AuthenticatedLayout>
       <Head title="Tasks" />
+      {success && <FlashMessage message={success} />}
       {/* Table Header */}
       <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between bg-white shadow-sm">
         <h2 className="text-2xl font-semibold text-gray-800">Tasks</h2>
@@ -20,7 +21,11 @@ const Index = ({ tasks, queryParams = null }) => {
           <Plus size={18} /> New task
         </Link>
       </div>
-      <TasksTable tasks={tasks} queryParams={queryParams} hideProjectColumn={true}/>
+      <TasksTable
+        tasks={tasks}
+        queryParams={queryParams}
+        hideProjectColumn={true}
+      />
     </AuthenticatedLayout>
   );
 };

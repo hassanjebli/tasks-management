@@ -63,7 +63,7 @@ export default function AuthenticatedLayout({ children }) {
           </button>
 
           {/* Logo */}
-          <span className="text-2xl font-bold text-emerald-600">TaskFlow</span>
+          <Link href="/"><span className="text-2xl font-bold text-emerald-600">TaskFlow</span></Link>
         </div>
 
         {/* Profile Dropdown */}

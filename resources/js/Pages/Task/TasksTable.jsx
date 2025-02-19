@@ -20,14 +20,15 @@ const TasksTable = ({
 }) => {
   queryParams = queryParams || {};
   const currentRoute = usePage().url;
-  
+
   // Determine if we're in project context
-  const isProjectContext = projectId !== null || currentRoute.includes('/projects/');
-  
+  const isProjectContext =
+    projectId !== null || currentRoute.includes("/projects/");
+
   // Extract project ID from URL if not provided but we're in a project route
   if (!projectId && isProjectContext) {
-    const urlParts = currentRoute.split('/');
-    const projectIndex = urlParts.indexOf('projects');
+    const urlParts = currentRoute.split("/");
+    const projectIndex = urlParts.indexOf("projects");
     if (projectIndex !== -1 && urlParts.length > projectIndex + 1) {
       projectId = urlParts[projectIndex + 1];
     }
@@ -94,6 +95,13 @@ const TasksTable = ({
     }
 
     router.get(getRouteForSearch(), queryParams);
+  };
+
+  const deleteTask = (task) => {
+    if (!window.confirm("Are you sure you want to delete this ?")) {
+      return;
+    }
+    return router.delete(route("tasks.destroy", task));
   };
 
   return (
@@ -170,11 +178,20 @@ const TasksTable = ({
                       className="w-10 h-10 rounded-md border object-cover"
                     />
                   </td>
-                  <td className="px-6 py-4 font-medium">{task.name}</td>
+
+                  <td className="px-6 py-4 font-medium">
+                    <Link
+                      href={route("tasks.show", task.id)}
+                      className="text-blue-600 hover:underline"
+                    >
+                      {task.name}
+                    </Link>
+                  </td>
+
                   {!isProjectContext && (
                     <td className="px-6 py-4 font-medium">
-                      <Link 
-                        href={route("projects.show", task.project.id)} 
+                      <Link
+                        href={route("projects.show", task.project.id)}
                         className="text-blue-600 hover:underline"
                       >
                         {task.project.name}
@@ -212,13 +229,13 @@ const TasksTable = ({
                       >
                         <Pencil size={16} />
                       </Link>
-                      <Link
-                        href={route("tasks.destroy", task.id)}
+                      <button
+                        onClick={() => deleteTask(task.id)}
                         className="text-red-500 hover:text-red-700 transition-colors"
                         aria-label="Delete task"
                       >
                         <Trash2 size={16} />
-                      </Link>
+                      </button>
                     </div>
                   </td>
                 </tr>
