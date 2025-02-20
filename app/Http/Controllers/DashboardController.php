@@ -54,7 +54,6 @@ class DashboardController extends Controller
                 'totalCompletedTasks',
                 'myCompletedTasks',
                 'activeTasks',
-                'dueDateStats',
             )
         );
     }
